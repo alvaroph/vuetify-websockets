@@ -55,47 +55,24 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import LiveSearches from '@/components/LiveSearches.vue';
+import communicationManager from '@/services/communicationManager.js';
 
 const searchQuery = ref('');
 const movies = ref([]);
 const loading = ref(false);
 const error = ref(null);
 
-let socket = null;
-
-// --- WebSocket Logic ---
-onMounted(() => {
-  socket = new WebSocket('ws://localhost:8080');
-  socket.onopen = () => console.log('Conectado al servidor WebSocket para enviar eventos.');
-  socket.onerror = (error) => console.error('Error en el WebSocket de envío:', error);
-  socket.onclose = () => console.log('Desconectado del servidor WebSocket de envío.');
-});
-
-onUnmounted(() => {
-  if (socket) {
-    socket.close();
-  }
-});
-
-function sendSocketMessage(type, term) {
-  if (socket && socket.readyState === 1) { // 1 is OPEN
-    const message = JSON.stringify({ type, term });
-    socket.send(message);
-  }
-}
-
 const handleTyping = () => {
-      sendSocketMessage('typing', searchQuery.value);
+  communicationManager.sendMessage({ type: 'typing', term: searchQuery.value });
 };
 
 const handleSearch = () => {
-  sendSocketMessage('search', searchQuery.value);
+  communicationManager.sendMessage({ type: 'search', term: searchQuery.value });
   searchMovies();
 };
 
-// --- Movie Search Logic (OMDb) ---
 const searchMovies = async () => {
   if (!searchQuery.value) {
     error.value = 'Por favor, introduce un término de búsqueda.';
@@ -107,14 +84,7 @@ const searchMovies = async () => {
   movies.value = [];
 
   try {
-    const apiKey = '19f8a30e'; // Reemplaza con tu API Key
-    const response = await fetch(`http://www.omdbapi.com/?s=${searchQuery.value}&apikey=${apiKey}&type=movie`);
-
-    if (!response.ok) {
-      throw new Error('Error en la respuesta de la red');
-    }
-
-    const data = await response.json();
+    const data = await communicationManager.fetchFromOMDb(searchQuery.value);
 
     if (data.Response === 'True') {
       movies.value = data.Search.slice(0, 10);
