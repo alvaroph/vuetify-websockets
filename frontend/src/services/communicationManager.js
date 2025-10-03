@@ -13,7 +13,7 @@ class CommunicationManager {
   }
 
   connect() {
-    this.socket = new WebSocket('ws://localhost:8080');
+    this.socket = new WebSocket(import.meta.env.VITE_WS_URL || 'ws://localhost:8080');
 
     this.socket.onopen = () => {
       console.log('WebSocket connection established');

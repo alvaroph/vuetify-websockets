@@ -1,0 +1,12 @@
+{
+  "name": "backend",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node websocket-server.js"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}
