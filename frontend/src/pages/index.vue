@@ -57,7 +57,8 @@
 <script setup>
 import { ref } from 'vue';
 import LiveSearches from '@/components/LiveSearches.vue';
-import communicationManager from '@/services/communicationManager.js';
+import websocketManager from '@/services/websocketManager.js';
+import fetchManager from '@/services/fetchManager.js';
 
 const searchQuery = ref('');
 const movies = ref([]);
@@ -65,11 +66,11 @@ const loading = ref(false);
 const error = ref(null);
 
 const handleTyping = () => {
-  communicationManager.sendMessage({ type: 'typing', term: searchQuery.value });
+  websocketManager.sendMessage('typing', searchQuery.value);
 };
 
 const handleSearch = () => {
-  communicationManager.sendMessage({ type: 'search', term: searchQuery.value });
+  websocketManager.sendMessage('search', searchQuery.value);
   searchMovies();
 };
 
@@ -84,7 +85,7 @@ const searchMovies = async () => {
   movies.value = [];
 
   try {
-    const data = await communicationManager.fetchFromOMDb(searchQuery.value);
+    const data = await fetchManager.fetchFromOMDb(searchQuery.value);
 
     if (data.Response === 'True') {
       movies.value = data.Search.slice(0, 10);
