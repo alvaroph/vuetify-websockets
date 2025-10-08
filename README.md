@@ -1,79 +1,81 @@
-# Vuetify (Default)
+# Demo Vuetify amb WebSockets
 
-This is the official scaffolding tool for Vuetify, designed to give you a head start in building your new Vuetify application. It sets up a base template with all the necessary configurations and standard directory structure, enabling you to begin development without the hassle of setting up the project from scratch.
+Aquest projecte és una demostració d'integració entre Vue 3, Vuetify i WebSockets, implementat amb una arquitectura moderna i contenitzat amb Docker.
 
-## ❗️ Important Links
+## 🚀 Característiques Principals
 
-- 📄 [Docs](https://vuetifyjs.com/)
-- 🚨 [Issues](https://issues.vuetifyjs.com/)
-- 🏬 [Store](https://store.vuetifyjs.com/)
-- 🎮 [Playground](https://play.vuetifyjs.com/)
-- 💬 [Discord](https://community.vuetifyjs.com)
+- Frontend modern amb Vue 3 i Vuetify
+- Comunicació en temps real mitjançant WebSockets
+- Arquitectura modular i escalable
+- Contenització completa amb Docker
+- Sistema de cerca en temps real integrat amb l'API d'OMDB
 
-## 💿 Install
+## 🏗️ Estructura del Projecte
 
-Set up your project using your preferred package manager. Use the corresponding command to install the dependencies:
+El projecte està dividit en dues parts principals:
 
-| Package Manager                                                | Command        |
-|---------------------------------------------------------------|----------------|
-| [yarn](https://yarnpkg.com/getting-started)                   | `yarn install` |
-| [npm](https://docs.npmjs.com/cli/v7/commands/npm-install)     | `npm install`  |
-| [pnpm](https://pnpm.io/installation)                          | `pnpm install` |
-| [bun](https://bun.sh/#getting-started)                        | `bun install`  |
+### Frontend
+- Desenvolupat amb Vue 3 i Vuetify
+- Ubicat a la carpeta `/frontend`
+- Integra serveis modulars a `/src/services`:
+  - `websocketManager.js`: Gestiona la connexió WebSocket i els esdeveniments en temps real
+  - `fetchManager.js`: Gestiona les peticions a l'API externa (OMDB)
 
-After completing the installation, your environment is ready for Vuetify development.
+### Backend
+- Servidor WebSocket simple i eficient
+- Ubicat a la carpeta `/backend`
 
-## ✨ Features
+## 📦 Contenització
 
-- 🖼️ **Optimized Front-End Stack**: Leverage the latest Vue 3 and Vuetify 3 for a modern, reactive UI development experience. [Vue 3](https://v3.vuejs.org/) | [Vuetify 3](https://vuetifyjs.com/en/)
-- 🗃️ **State Management**: Integrated with [Pinia](https://pinia.vuejs.org/), the intuitive, modular state management solution for Vue.
-- 🚦 **Routing and Layouts**: Utilizes Vue Router for SPA navigation and vite-plugin-vue-layouts for organizing Vue file layouts. [Vue Router](https://router.vuejs.org/) | [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
-- ⚡ **Next-Gen Tooling**: Powered by Vite, experience fast cold starts and instant HMR (Hot Module Replacement). [Vite](https://vitejs.dev/)
-- 🧩 **Automated Component Importing**: Streamline your workflow with unplugin-vue-components, automatically importing components as you use them. [unplugin-vue-components](https://github.com/antfu/unplugin-vue-components)
+El projecte utilitza Docker per a una configuració consistent i fàcil desplegament:
 
-These features are curated to provide a seamless development experience from setup to deployment, ensuring that your Vuetify application is both powerful and maintainable.
+```yaml
+services:
+  frontend:
+    # Port: 3000
+    # Hot-reloading activat
+    # Configuració de WebSocket inclosa
 
-## 💡 Usage
-
-This section covers how to start the development server and build your project for production.
-
-### Starting the Development Server
-
-To start the development server with hot-reload, run the following command. The server will be accessible at [http://localhost:3000](http://localhost:3000):
-
-```bash
-yarn dev
+  backend:
+    # Port: 8080
+    # Volums configurats per desenvolupament
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+## 🔧 Configuració i Execució
 
-> Add NODE_OPTIONS='--no-warnings' to suppress the JSON import warnings that happen as part of the Vuetify import mapping. If you are on Node [v21.3.0](https://nodejs.org/en/blog/release/v21.3.0) or higher, you can change this to NODE_OPTIONS='--disable-warning=5401'. If you don't mind the warning, you can remove this from your package.json dev script.
-
-### Building for Production
-
-To build your project for production, use:
-
+1. Clona el repositori
+2. Executa amb Docker Compose:
 ```bash
-yarn build
+docker-compose up
 ```
 
-(Repeat for npm, pnpm, and bun with respective commands.)
+Els serveis estaran disponibles a:
+- Frontend: http://localhost:3000
+- Backend WebSocket: ws://localhost:8080
 
-Once the build process is completed, your application will be ready for deployment in a production environment.
+## 💡 Característiques Destacades
 
-## 💪 Support Vuetify Development
+### Sistema de Comunicació en Temps Real
+El projecte implementa un sistema robust de comunicació en temps real mitjançant el `websocketManager`, que proporciona:
+- Gestió automàtica de connexions
+- Sistema d'esdeveniments en temps real
+- Límit configurable d'esdeveniments
+- Gestió d'errors i reconnexió
 
-This project is built with [Vuetify](https://vuetifyjs.com/en/), a UI Library with a comprehensive collection of Vue components. Vuetify is an MIT licensed Open Source project that has been made possible due to the generous contributions by our [sponsors and backers](https://vuetifyjs.com/introduction/sponsors-and-backers/). If you are interested in supporting this project, please consider:
+### Integració amb APIs Externes
+El `fetchManager` proporciona una capa d'abstracció per a les comunicacions HTTP:
+- Integració amb l'API d'OMDB
+- Gestió centralitzada de peticions
+- Fàcilment extensible per a altres APIs
 
-- [Requesting Enterprise Support](https://support.vuetifyjs.com/)
-- [Sponsoring John on Github](https://github.com/users/johnleider/sponsorship)
-- [Sponsoring Kael on Github](https://github.com/users/kaelwd/sponsorship)
-- [Supporting the team on Open Collective](https://opencollective.com/vuetify)
-- [Becoming a sponsor on Patreon](https://www.patreon.com/vuetify)
-- [Becoming a subscriber on Tidelift](https://tidelift.com/subscription/npm/vuetify)
-- [Making a one-time donation with Paypal](https://paypal.me/vuetify)
+## 🛠️ Tecnologies Utilitzades
 
-## 📑 License
-[MIT](http://opensource.org/licenses/MIT)
+- Vue 3
+- Vuetify
+- WebSocket
+- Docker
+- Node.js (backend)
 
-Copyright (c) 2016-present Vuetify, LLC
+## 📝 Llicència
+
+MIT
